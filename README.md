@@ -30,7 +30,8 @@ Thêm đoạn này vào giữa cặp thẻ `<dependencies>` trong file `pom.xml`
 
 ### 📄 vn.edu.hcmus.mail.config.MailConfig
 
-    // THAY ĐỔI THÔNG TIN TẠI ĐÂY
+    // THAY ĐỔI THÔNG TIN TẠI ĐÂY, mật khẩu ứng dụng sẽ đc lấy bằng cách ở phần 4.1 trong READ ME
+    
     public static final String EMAIL_USER = "email_cua_ban@gmail.com";
     public static final String APP_PASSWORD = "16_ky_tu_mat_khau_ung_dung"; 
 }
