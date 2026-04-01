@@ -1,60 +1,100 @@
-Đồ án Lập trình mạng: Chương trình Gửi & Nhận Mail (Java)
-Chào mừng các thành viên trong nhóm đến với dự án! Đây là ứng dụng Java Client cho phép gửi email qua giao thức SMTP và nhận email qua giao thức POP3, kết nối trực tiếp với Mail Server của Google (Gmail).
+# 📧 ĐỒ ÁN LẬP TRÌNH MẠNG: JAVA MAIL CLIENT (SMTP & POP3)
 
-📌 Các tính năng chính
-[x] Gửi Email (SMTP): Hỗ trợ gửi thư văn bản thuần túy qua cổng bảo mật TLS (587).
+Dự án này triển khai việc gửi và nhận thư dựa trên các giao thức TCP tầng ứng dụng, bám sát nội dung tài liệu về lập trình Socket và mô hình Client-Server.
 
-[x] Nhận Email (POP3): Kết nối tới Inbox, lấy danh sách và thông tin các thư mới nhất qua cổng SSL (995).
+---
 
-[ ] Giao diện (GUI): (Đang phát triển) - Dự kiến sử dụng Java Swing/JavaFX.
+## 📂 1. CẤU TRÚC DỰ ÁN (PROJECT STRUCTURE)
 
-📂 Cấu trúc Project
-Dự án được tổ chức theo mô hình phân lớp để dễ quản lý:
+Tạo các Package trong thư mục `src/main/java` như sau:
+- `vn.edu.hcmus.mail.config`: Chứa cấu hình kết nối.
+- `vn.edu.hcmus.mail.model`: Định nghĩa đối tượng Email.
+- `vn.edu.hcmus.mail.service`: Chứa logic gửi/nhận (SMTP/POP3).
+- `vn.edu.hcmus.mail.main`: Chứa hàm chạy chương trình.
 
-Plaintext
-src/main/java/vn/edu/hcmus/mail/
-├── config/   # Chứa cấu hình hệ thống (Host, Port, Account)
-├── model/    # Định nghĩa các đối tượng dữ liệu (EmailContent)
-├── service/  # Logic xử lý giao thức mạng (SmtpService, Pop3Service)
-└── main/     # Điểm chạy chương trình (Main class)
-🛠 Yêu cầu hệ thống
-Java JDK: Phiên bản 17 trở lên (Project đang dùng OpenJDK 25).
+---
 
-IDE: IntelliJ IDEA (khuyến khích).
+## 🛠 2. CẤU HÌNH THƯ VIỆN (POM.XML)
 
-Build Tool: Maven (để tự động quản lý thư viện javax.mail).
+Thêm đoạn này vào giữa cặp thẻ `<dependencies>` trong file `pom.xml`:
 
-🚀 Các bước bắt đầu (Dành cho thành viên mới)
-1. Clone Project
-Mở Terminal hoặc dùng tính năng Get from VCS trong IntelliJ:
+    <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
+        <version>1.6.2</version>
+    </dependency>
 
-Bash
-git clone <link-github-cua-nhom>
-2. Cài đặt Thư viện
-Sau khi mở Project, IntelliJ sẽ tự nhận diện file pom.xml. Hãy nhấn nút Load Maven Changes (biểu tượng chữ M) để tải thư viện javax.mail.
+---
 
-3. Cấu hình tài khoản Gmail (Bắt buộc)
-Để ứng dụng có thể kết nối với Google, mỗi thành viên cần tự chuẩn bị:
+## 💻 3. MÃ NGUỒN CHI TIẾT
 
-Bật xác minh 2 bước cho tài khoản Gmail cá nhân.
+### 📄 vn.edu.hcmus.mail.config.MailConfig
 
-Tạo Mật khẩu ứng dụng (App Password): Truy cập Google Security, tạo mật khẩu 16 ký tự cho ứng dụng "Thư".
+    // THAY ĐỔI THÔNG TIN TẠI ĐÂY
+    public static final String EMAIL_USER = "email_cua_ban@gmail.com";
+    public static final String APP_PASSWORD = "16_ky_tu_mat_khau_ung_dung"; 
+}
 
-Bật POP3 trong Gmail: Vào Cài đặt Gmail -> Chuyển tiếp và POP/IMAP -> Chọn Bật POP cho tất cả thư.
+### 📄 vn.edu.hcmus.mail.model.EmailContent
 
-4. Thiết lập cấu hình local
-Mở file vn.edu.hcmus.mail.config.MailConfig và điền thông tin của bạn:
 
-Java
-public static final String EMAIL_USER = "email_cua_ban@gmail.com";
-public static final String APP_PASSWORD = "xxxx-xxxx-xxxx-xxxx"; // 16 ký tự viết liền
-📖 Cách chạy chương trình
-Tìm đến file vn.edu.hcmus.mail.main.Main.
+### 📄 vn.edu.hcmus.mail.service.SmtpService
 
-Nhấn chuột phải chọn Run 'Main.main()'.
 
-Kiểm tra cửa sổ Console:
+### 📄 vn.edu.hcmus.mail.service.Pop3Service
 
-Phần trên sẽ báo kết quả gửi mail.
 
-Phần dưới sẽ liệt kê 5 email mới nhất trong Inbox của bạn.
+### 📄 vn.edu.hcmus.mail.main.Main
+
+
+---
+
+## 🔐 4. HƯỚNG DẪN CẤU HÌNH GMAIL (QUAN TRỌNG)
+
+1. **App Password (Mật khẩu ứng dụng):**
+   - Vào [Tài khoản Google > Bảo mật].
+   - Bật **Xác minh 2 bước**.
+   - Tìm "Mật khẩu ứng dụng", tạo mã 16 ký tự và dán vào `MailConfig.java` (xóa khoảng trắng).
+
+2. **Bật POP3 Access:**
+   - Vào [Gmail trên web > Cài đặt > Chuyển tiếp và POP/IMAP].
+   - Chọn **Bật POP cho tất cả thư**.
+   - Nhấn **Lưu thay đổi** ở dưới cùng.
+
+---
+
+## 🚀 5. HƯỚNG DẪN MỚI CHO INTELJ (CLONE REPO)
+
+Nếu bạn mới cài IntelliJ và chưa biết cách lấy code về, hãy làm theo các bước sau:
+
+### Bước 1: Lấy đường dẫn dự án
+- Truy cập vào link GitHub của nhóm.
+- Nhấn nút màu xanh **Code**, sau đó copy đường dẫn (ví dụ: `https://github.com/user/JavaMailProject.git`).
+
+### Bước 2: Clone vào IntelliJ IDEA
+- Mở IntelliJ lên. Nếu đang ở màn hình chào mừng, chọn **Get from VCS**.
+- Nếu đang mở một project khác, vào menu **File > New > Project from Version Control...**
+- Tại ô **URL**, dán đường dẫn vừa copy ở Bước 1 vào.
+- Tại ô **Directory**, chọn thư mục trên máy bạn muốn lưu code.
+- Nhấn nút **Clone**.
+
+
+
+### Bước 3: Tin tưởng dự án (Trust Project)
+- Một bảng thông báo hiện lên hỏi bạn có tin tưởng project này không, hãy chọn **Trust Project**.
+
+### Bước 4: Tải thư viện Maven (Cực kỳ quan trọng)
+- Khi code mở ra, bạn sẽ thấy nhiều dòng bị lỗi đỏ. Đừng lo!
+- Nhìn sang cạnh phải màn hình, nhấn vào biểu tượng chữ **M** (Maven).
+- Nhấn vào biểu tượng **mũi tên xoay vòng (Reload All Maven Projects)**.
+- Đợi IntelliJ tải thư viện xong (thanh Progress ở dưới cùng chạy hết), code sẽ hết lỗi đỏ.
+
+# 📧 Java Mail Project - LTM Group
+
+### Hướng dẫn nhanh cho thành viên:
+1. **Clone** repo này về máy.
+2. Nhấn **Reload Maven** trong IntelliJ để tải thư viện.
+3. Tự tạo **App Password** trên Gmail cá nhân.
+4. Bật **POP Access** trong cài đặt Gmail trên trình duyệt.
+5. Cập nhật `EMAIL_USER` và `APP_PASSWORD` vào file `MailConfig.java` để chạy thử local.
+6. **LƯU Ý:** Không commit thông tin mật khẩu thật lên GitHub.
