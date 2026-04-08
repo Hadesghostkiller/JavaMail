@@ -31,7 +31,4 @@ public class Main {
         Pop3Service pop3Service = new Pop3Service();
         pop3Service.receive();
     }
-    // tét tét
-
-
 }
