@@ -2,6 +2,10 @@ package vn.edu.hcmus.mail.service;
 
 import vn.edu.hcmus.mail.config.MailConfig;
 import javax.mail.*;
+import javax.mail.internet.MimeUtility;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Pop3Service {
@@ -34,6 +38,8 @@ public class Pop3Service {
                 System.out.println("- Từ: " + msg.getFrom()[0]);
                 System.out.println("- Tiêu đề: " + msg.getSubject());
                 System.out.println("- Ngày: " + msg.getSentDate());
+                // Xử lý file đính kèm
+                saveAttachments(msg);
                 System.out.println("---------------------------");
             }
 
@@ -44,6 +50,46 @@ public class Pop3Service {
         } catch (Exception e) {
             System.err.println("Lỗi khi nhận mail: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+    private void saveAttachments(Message message) {
+        try {
+            // Kiểm tra xem mail có chứa nhiều phần (Multipart) không
+            if (message.isMimeType("multipart/*")) {
+                Multipart multipart = (Multipart) message.getContent();
+                // Duyệt qua từng phần của email
+                for (int i = 0; i < multipart.getCount(); i++) {
+                    BodyPart bodyPart = multipart.getBodyPart(i);
+                    // Kiểm tra xem phần này có phải là file đính kèm không
+                    if (Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition())) {
+                        String fileName = bodyPart.getFileName();
+                        if (fileName != null) {
+                            // Giải mã tên file để tránh lỗi font tiếng Việt
+                            fileName = MimeUtility.decodeText(fileName);
+                            System.out.println("  [Phát hiện file]: " + fileName);
+
+                            // Tạo thư mục "downloads" nếu chưa có
+                            File folder = new File("downloads");
+                            if (!folder.exists()) folder.mkdirs();
+
+                            File dest = new File(folder, fileName);
+
+                            // Ghi dữ liệu từ stream vào file (Dùng cho cả Audio/Video dung lượng lớn)
+                            try (InputStream is = bodyPart.getInputStream();
+                                 FileOutputStream fos = new FileOutputStream(dest)) {
+                                byte[] buffer = new byte[4096];
+                                int bytesRead;
+                                while ((bytesRead = is.read(buffer)) != -1) {
+                                    fos.write(buffer, 0, bytesRead);
+                                }
+                            }
+                            System.out.println("  => Saved to: " + dest.getAbsolutePath());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("  [Error saving attachment]: " + e.getMessage());
         }
     }
 }
