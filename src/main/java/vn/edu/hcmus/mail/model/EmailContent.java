@@ -18,7 +18,7 @@ public class EmailContent {
     // Các phương thức Getter (Đây là phần bạn đang thiếu)
     public String getTo() {
         return to;
-    }
+    }   
 
     public String getSubject() {
         return subject;
