@@ -10,9 +10,18 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SmtpService {
+
+    // Thread pool quản lý tối đa 5 luồng gửi mail song song
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(5);
+
+
+     /// 1. HÀM GỬI GMAIL (Mặc định - Hỗ trợ đính kèm file)
     public void send(EmailContent email) throws MessagingException, UnsupportedEncodingException {
         Properties props = new Properties();
         props.put("mail.debug", "true");
@@ -31,32 +40,26 @@ public class SmtpService {
         message.setFrom(new InternetAddress(MailConfig.EMAIL_USER));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getTo()));
         message.setSubject(email.getSubject(), "UTF-8");
-        // message.setText(email.getBody());
 
-        // Dinh kem tep < 25MB
-        // 1. Tạo thùng chứa Multipart
+        // Xử lý Multipart (Nội dung văn bản + File đính kèm)
         Multipart multipart = new MimeMultipart();
 
-        // 2. Tạo phần nội dung văn bản (Body)
+        // Phần text của email
         MimeBodyPart textPart = new MimeBodyPart();
         textPart.setText(email.getBody(), "UTF-8");
         multipart.addBodyPart(textPart);
 
-        // 3. Xử lý danh sách đính kèm
+        // Phần xử lý file đính kèm
         if (email.getAttachmentPaths() != null) {
             for (String filePath : email.getAttachmentPaths()) {
                 File file = new File(filePath);
-
-                // Kiểm tra dung lượng < 25MB
-                if (file.exists() && file.length() <= 25 * 1024 * 1024) {
+                if (file.exists() && file.length() <= 25 * 1024 * 1024) { // Giới hạn 25MB
                     MimeBodyPart attachPart = new MimeBodyPart();
                     DataSource source = new FileDataSource(filePath);
                     attachPart.setDataHandler(new DataHandler(source));
 
-                    // Mã hóa tên file để tránh lỗi font tiếng Việt
                     String fileName = MimeUtility.encodeText(file.getName(), "UTF-8", "B");
                     attachPart.setFileName(fileName);
-
                     multipart.addBodyPart(attachPart);
                 } else {
                     System.out.println("=> File không hợp lệ hoặc quá 25MB: " + file.getName());
@@ -64,9 +67,64 @@ public class SmtpService {
             }
         }
 
-        // 4. Gán toàn bộ multipart vào message
         message.setContent(multipart);
+        Transport.send(message);
+    }
+
+
+     /// 2. HÀM GỬI LIÊN SERVER (Outlook, Yahoo,...)
+    public void send_MultiServer(EmailContent content, Properties config, String user, String pass) throws MessagingException {
+        Session session = Session.getInstance(config, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(user, pass);
+            }
+        });
+
+        session.setDebug(true); // Bật để theo dõi log TCP/IP
+
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(user));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(content.getTo()));
+        message.setSubject(content.getSubject());
+        message.setText(content.getBody());
 
         Transport.send(message);
+    }
+
+
+    ///3. HÀM GỬI HÀNG LOẠT (Bulk Mail)
+    public void send_Bulk(List<String> recipients, String subject, String body,
+                          Properties config, String user, String pass) {
+
+        for (String emailAddr : recipients) {
+            threadPool.execute(() -> {
+                try {
+                    EmailContent email = new EmailContent(emailAddr, subject, body);
+
+                    // Gọi trực tiếp hàm gửi liên server nội bộ
+                    send_MultiServer(email, config, user, pass);
+
+                    System.out.println("[SUCCESS] Đã gửi thành công tới: " + emailAddr);
+
+                    // Nghỉ 2 giây để tránh bị Server coi là Spam
+                    Thread.sleep(2000);
+
+                } catch (MessagingException e) {
+                    System.err.println("[ERROR] Lỗi tại: " + emailAddr + " -> " + e.getMessage());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+        }
+    }
+
+    /**
+     * Dọn dẹp tài nguyên khi tắt ứng dụng
+     */
+    public void stopService() {
+        if (!threadPool.isShutdown()) {
+            threadPool.shutdown();
+        }
     }
 }
