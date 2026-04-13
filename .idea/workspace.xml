@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="522c711d-771d-4dac-932c-52e28a9faf33" name="Changes" comment="Xu li attachement &lt; 25MB">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/model/EmailContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/model/EmailContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/service/Pop3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/service/Pop3Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/service/SmtpService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/service/SmtpService.java" afterDir="false" />
-    </list>
+    <list default="true" id="522c711d-771d-4dac-932c-52e28a9faf33" name="Changes" comment="Xu li attachement &lt; 25MB" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,22 +18,22 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;nhatthanhlgf&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "nhatthanhlgf"
   }
-}</component>
+}]]></component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Hadesghostkiller/JavaMail.git",
-    "accountId": "3476fda5-89d1-43a1-8e5b-4c8ccfb254fa"
+    "accountId": "07810f78-cbc8-4f30-921a-3181405a25c0"
   }
 }]]></component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 7
-}</component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
   <component name="ProjectId" id="3CHkMWjFOVTk9JthN5ERYDlmxxH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -48,36 +42,19 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "thun",
-    "junie.onboarding.icon.badge.shown": "true",
+    "git-widget-placeholder": "thanh",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/LAP_TRINH_MANG/JavaMail",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\LAP_TRINH_MANG\JavaMail" />
-      <recent name="D:\LAP_TRINH_MANG\JavaMail\src\main\java\vn\edu\hcmus\mail\service" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="vn.edu.hcmus.mail.main" />
-      <recent name="vn.edu.hcmus.mail.model" />
-      <recent name="vn.edu.hcmus.mail.service" />
-    </key>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="522c711d-771d-4dac-932c-52e28a9faf33" name="Changes" comment="" />
@@ -85,7 +62,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1776049837460</updated>
-      <workItem from="1776073443854" duration="305000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <option name="closed" value="true" />
