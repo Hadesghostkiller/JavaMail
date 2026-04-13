@@ -25,11 +25,11 @@ public class Main {
                 "Hi fen, email nay test dinh kem file."
         );
 
-        // --- PHAN CUA THANH (NGUOI SO 2) ---
+
         ArrayList<String> files = new ArrayList<>();
         files.add("D:/NGUYEN_VU_NHAT_THANH/Nam_4_HK2/Lap_trinh_mang/Li_thuyet/Chap1.ppt");
         email.setAttachmentPaths(files);
-        // -----------------------------------
+
 
         // 2. Khoi tao dich vu
         SmtpService smtpService = new SmtpService();
