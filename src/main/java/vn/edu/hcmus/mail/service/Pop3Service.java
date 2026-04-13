@@ -2,6 +2,9 @@ package vn.edu.hcmus.mail.service;
 
 import vn.edu.hcmus.mail.config.MailConfig;
 import javax.mail.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.Properties;
 import javax.mail.internet.*;
 
@@ -60,5 +63,49 @@ public class Pop3Service {
             sb.append("Lỗi POP3: ").append(e.getMessage());
         }
         return sb.toString(); // Trả kết quả về cho GUI
+    }
+
+    // Xu ly file sau khi dươc gui + tai ve
+    private void saveAttachments(Message message) {
+        try {
+            // Kiểm tra xem mail có chứa nhiều phần (Multipart) không
+            if (message.isMimeType("multipart/*")) {
+                Multipart multipart = (Multipart) message.getContent();
+
+                // Duyệt qua từng phần của email
+                for (int i = 0; i < multipart.getCount(); i++) {
+                    BodyPart bodyPart = multipart.getBodyPart(i);
+
+                    // Kiểm tra xem phần này có phải là file đính kèm không
+                    if (Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition())) {
+                        String fileName = bodyPart.getFileName();
+                        if (fileName != null) {
+                            // Giải mã tên file để tránh lỗi font tiếng Việt
+                            fileName = MimeUtility.decodeText(fileName);
+                            System.out.println("  [Phát hiện file]: " + fileName);
+
+                            // Tạo thư mục "downloads" nếu chưa có
+                            File folder = new File("downloads");
+                            if (!folder.exists()) folder.mkdirs();
+
+                            File dest = new File(folder, fileName);
+
+                            // Ghi dữ liệu từ stream vào file
+                            try (InputStream is = bodyPart.getInputStream();
+                                 FileOutputStream fos = new FileOutputStream(dest)) {
+                                byte[] buffer = new byte[4096];
+                                int bytesRead;
+                                while ((bytesRead = is.read(buffer)) != -1) {
+                                    fos.write(buffer, 0, bytesRead);
+                                }
+                            }
+                            System.out.println("  => Đã lưu file thành công tại thư mục downloads!");
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("  [Lỗi lưu file]: " + e.getMessage());
+        }
     }
 }

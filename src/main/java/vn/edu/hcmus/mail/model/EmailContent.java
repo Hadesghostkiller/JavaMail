@@ -28,7 +28,7 @@ public class EmailContent {
         return body;
     }
 
-    // Thành + Gửi đính kèm file / video
+    // Thành - Gửi đính kèm file / video <25MB
     private java.util.List<String> attachmentPaths;
 
     public void setAttachmentPaths(java.util.List<String> attachmentPaths) {
