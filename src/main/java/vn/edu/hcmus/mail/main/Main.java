@@ -23,6 +23,8 @@ public class Main {
         // Gui + Dinh kem file
         AttachmentTask myTask = new AttachmentTask();
         myTask.AttachmentRun();
+
+
         // 3. GỌI DUY NHẤT 1 HÀM TỪ SMTP TESTER
         new SmtpTester(new SmtpService()).execAllTests();
 

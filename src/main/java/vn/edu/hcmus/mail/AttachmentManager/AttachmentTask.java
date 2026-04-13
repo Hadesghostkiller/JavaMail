@@ -11,14 +11,14 @@ public class AttachmentTask {
     public void AttachmentRun() {
         // 1. Chuẩn bị dữ liệu
         EmailContent email = new EmailContent(
-                "nhatthanh30072004@gmail.com",
+                "dutthuan@gmail.com",
                 " De Tai Lap Trinh Mang ",
                 "Hi fen, day la email test dinh kem file tu class rieng."
         );
 
         // Thêm file đính kèm
         ArrayList<String> files = new ArrayList<>();
-        files.add("C:/Users/admin/Desktop/4.jpg");
+        files.add("D:Downloads/logo.png");
         email.setAttachmentPaths(files);
 
         // 2. Gửi mail
