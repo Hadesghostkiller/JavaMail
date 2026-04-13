@@ -29,23 +29,7 @@
             <version>3.44.1.0</version>
         </dependency>
 
-        <!--author: daniel -> add gui -->
-        <dependency>
-            <groupId>com.formdev</groupId>
-            <artifactId>flatlaf</artifactId>
-            <version>3.4.1</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-swing</artifactId>
-            <version>12.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-fontawesome5-pack</artifactId>
-            <version>12.3.0</version>
-        </dependency>
     </dependencies>
 
 
