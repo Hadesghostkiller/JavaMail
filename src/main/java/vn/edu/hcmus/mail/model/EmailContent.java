@@ -1,5 +1,8 @@
 package vn.edu.hcmus.mail.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EmailContent {
     private String to;
     private String subject;
@@ -15,7 +18,7 @@ public class EmailContent {
     // Các phương thức Getter (Đây là phần bạn đang thiếu)
     public String getTo() {
         return to;
-    }
+    }   
 
     public String getSubject() {
         return subject;
@@ -24,4 +27,16 @@ public class EmailContent {
     public String getBody() {
         return body;
     }
+
+    // Thành - Gửi đính kèm file / video <25MB
+    private java.util.List<String> attachmentPaths;
+
+    public void setAttachmentPaths(java.util.List<String> attachmentPaths) {
+        this.attachmentPaths = attachmentPaths;
+    }
+
+    public java.util.List<String> getAttachmentPaths() {
+        return attachmentPaths;
+    }
 }
+
