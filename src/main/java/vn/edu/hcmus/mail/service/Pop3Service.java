@@ -46,6 +46,9 @@ public class Pop3Service {
                 sb.append("- Từ: ").append(msg.getFrom()[0]).append("\n");
                 sb.append("- Tiêu đề: ").append(msg.getSubject()).append("\n");
 
+                // GỌI HÀM LƯU FILE
+                saveAttachments(msg);
+
                 // LẤY NỘI DUNG THƯ (BODY)
                 sb.append("- Nội dung: \n");
                 try {
