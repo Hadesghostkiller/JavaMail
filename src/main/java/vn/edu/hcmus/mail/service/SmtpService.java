@@ -33,6 +33,7 @@ public class SmtpService {
         message.setSubject(email.getSubject(), "UTF-8");
         // message.setText(email.getBody());
 
+        // Dinh kem tep < 25MB
         // 1. Tạo thùng chứa Multipart
         Multipart multipart = new MimeMultipart();
 
