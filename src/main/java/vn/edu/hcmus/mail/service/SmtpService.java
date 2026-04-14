@@ -94,26 +94,21 @@ public class SmtpService {
 
 
     ///3. HÀM GỬI HÀNG LOẠT (Bulk Mail)
-    public void send_Bulk(List<String> recipients, String subject, String body,
-                          Properties config, String user, String pass) {
-
+    public void send_Bulk(List<String> recipients, String subject, String body, List<String> filePaths) {
         for (String emailAddr : recipients) {
             threadPool.execute(() -> {
                 try {
+                    // Tạo đối tượng mail có đầy đủ cả chữ lẫn danh sách file
                     EmailContent email = new EmailContent(emailAddr, subject, body);
+                    email.setAttachmentPaths(filePaths); // <== QUAN TRỌNG: Phải nạp file vào đây
 
-                    // Gọi trực tiếp hàm gửi liên server nội bộ
-                    send_MultiServer(email, config, user, pass);
+                    // GỌI CHÍNH HÀM SEND (Hàm này đã có logic xử lý Multipart rồi)
+                    send(email);
 
-                    System.out.println("[SUCCESS] Đã gửi thành công tới: " + emailAddr);
-
-                    // Nghỉ 2 giây để tránh bị Server coi là Spam
+                    System.out.println("[SUCCESS] Đã gửi kèm file tới: " + emailAddr);
                     Thread.sleep(2000);
-
-                } catch (MessagingException e) {
+                } catch (Exception e) {
                     System.err.println("[ERROR] Lỗi tại: " + emailAddr + " -> " + e.getMessage());
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                 }
             });
         }

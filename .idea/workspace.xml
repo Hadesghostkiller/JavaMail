@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="522c711d-771d-4dac-932c-52e28a9faf33" name="Changes" comment="thêm test_case, gọi smtp_tester vào hàm main">
+      <change afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/gui/ImagePreviewer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/AttachmentManager/AttachmentTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/AttachmentManager/AttachmentTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/gui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/gui/MainFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/main/SmtpTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/main/SmtpTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/service/SmtpService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/hcmus/mail/service/SmtpService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +39,12 @@
     &quot;assignee&quot;: &quot;nhatthanhlgf&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Hadesghostkiller/JavaMail.git&quot;,
-    &quot;accountId&quot;: &quot;07810f78-cbc8-4f30-921a-3181405a25c0&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Hadesghostkiller/JavaMail.git",
+    "accountId": "7d198b43-f9be-4238-bb3d-9a1312e1c148"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 7
@@ -59,16 +63,28 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "dev",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "tam",
     "git.auto.fetch.suggestion.counter": "3",
+    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="522c711d-771d-4dac-932c-52e28a9faf33" name="Changes" comment="" />
@@ -76,6 +92,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1776049837460</updated>
+      <workItem from="1776170821357" duration="2099000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <option name="closed" value="true" />
