@@ -1,6 +1,6 @@
 package vn.edu.hcmus.mail.AttachmentManager;
 
-import vn.edu.hcmus.mail.model.EmailContent;
+import      vn.edu.hcmus.mail.model.EmailContent;
 import vn.edu.hcmus.mail.service.Pop3Service;
 import vn.edu.hcmus.mail.service.SmtpService;
 
@@ -11,14 +11,14 @@ public class AttachmentTask {
     public void AttachmentRun() {
         // 1. Chuẩn bị dữ liệu
         EmailContent email = new EmailContent(
-                "dutthuan@gmail.com",
+                "imtheone.tellmeurname@gmail.com",
                 " De Tai Lap Trinh Mang ",
                 "Hi fen, day la email test dinh kem file tu class rieng."
         );
 
         // Thêm file đính kèm
         ArrayList<String> files = new ArrayList<>();
-        files.add("D:Downloads/logo.png");
+        files.add("C:/AD/Downloads/1.png");
         email.setAttachmentPaths(files);
 
         // 2. Gửi mail
