@@ -15,7 +15,5 @@ public class Main {
             System.out.println("[SYSTEM] Ứng dụng đã sẵn sàng. Hãy thao tác trên GUI.");
         });
 
-        // --- ĐÃ XÓA: Các lệnh AttachmentTask, SmtpTester, Pop3Service cũ ---
-        // Không còn tình trạng vừa bật app lên là nó tự gửi mail nữa!
     }
 }
