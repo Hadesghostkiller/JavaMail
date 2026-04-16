@@ -47,13 +47,6 @@
             <version>12.3.0</version>
         </dependency>
 
-        <!-- Supabase Java Client -->
-        <dependency>
-            <groupId>io.supabase</groupId>
-            <artifactId>supabase-java</artifactId>
-            <version>0.0.4</version>
-        </dependency>
-
         <!-- Gson for JSON parsing -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
