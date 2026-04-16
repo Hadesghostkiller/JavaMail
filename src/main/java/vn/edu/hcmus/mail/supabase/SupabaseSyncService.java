@@ -1,6 +1,5 @@
 package vn.edu.hcmus.mail.supabase;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import vn.edu.hcmus.mail.config.SupabaseConfig;
 import vn.edu.hcmus.mail.model.Email;
 
@@ -44,7 +43,6 @@ public class SupabaseSyncService {
                 data.put("body", email.getBody());
                 data.put("timestamp", email.getTimestamp().format(DATE_FORMAT));
                 data.put("attachments", email.getAttachments());
-                data.put("type", "sent");
 
                 String response = postToSupabase(data, "sent_emails");
                 System.out.println("[SUPABASE] Đã sync email đã gửi: " + email.getSubject());
@@ -70,7 +68,6 @@ public class SupabaseSyncService {
                 data.put("body", email.getBody());
                 data.put("timestamp", email.getTimestamp().format(DATE_FORMAT));
                 data.put("is_read", email.isRead());
-                data.put("type", "received");
 
                 String response = postToSupabase(data, "received_emails");
                 System.out.println("[SUPABASE] Đã sync email nhận: " + email.getSubject());

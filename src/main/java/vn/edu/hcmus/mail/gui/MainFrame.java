@@ -2,8 +2,6 @@ package vn.edu.hcmus.mail.gui;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
-import org.kordamp.ikonli.swing.FontIcon;
 import vn.edu.hcmus.mail.config.MailConfig;
 import vn.edu.hcmus.mail.database.EmailCache;
 import vn.edu.hcmus.mail.supabase.SupabaseEmailParser;
@@ -43,6 +41,7 @@ public class MainFrame extends JFrame {
     private JTextField txtSearchSent = new JTextField();
     private JTextField txtSearchReceived = new JTextField();
     private JLabel lblUnreadCount = new JLabel();
+    private JButton btnPullSupabase;
 
     private final Color PRIMARY_COLOR = new Color(33, 150, 243);
     private final Color SUCCESS_COLOR = new Color(76, 175, 80);
@@ -60,15 +59,11 @@ public class MainFrame extends JFrame {
         loadHistoryData();
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-        Icon sendIcon = FontIcon.of(FontAwesomeSolid.PAPER_PLANE, 20, Color.GRAY);
-        Icon inboxIcon = FontIcon.of(FontAwesomeSolid.INBOX, 20, Color.GRAY);
-        Icon sentIcon = FontIcon.of(FontAwesomeSolid.PAPER_PLANE, 20, Color.GRAY);
-        Icon historyIcon = FontIcon.of(FontAwesomeSolid.HISTORY, 20, Color.GRAY);
 
-        tabbedPane.addTab("Soạn Thư", sendIcon, createSendPanel());
-        tabbedPane.addTab("Hộp Thư Đến", inboxIcon, createInboxPanel());
-        tabbedPane.addTab("Đã Gửi", sentIcon, createSentHistoryPanel());
-        tabbedPane.addTab("Lịch Sử", historyIcon, createHistoryPanel());
+        tabbedPane.addTab("Soạn Thư", createSendPanel());
+        tabbedPane.addTab("Hộp Thư Đến", createInboxPanel());
+        tabbedPane.addTab("Đã Gửi", createSentHistoryPanel());
+        tabbedPane.addTab("Lịch Sử", createHistoryPanel());
         tabbedPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_HEIGHT, 50);
 
         add(tabbedPane);
@@ -100,7 +95,7 @@ public class MainFrame extends JFrame {
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
         JLabel lblTo = new JLabel("Đến:");
-        lblTo.setIcon(FontIcon.of(FontAwesomeSolid.USERS, 14, Color.GRAY));
+        lblTo.setIcon(null); // FontIcon.of(FontAwesomeSolid.USERS, 14, Color.GRAY));
         headerPanel.add(lblTo, gbc);
 
         gbc.gridx = 1; gbc.weightx = 1.0;
@@ -110,7 +105,7 @@ public class MainFrame extends JFrame {
 
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
         JLabel lblSub = new JLabel("Tiêu đề:");
-        lblSub.setIcon(FontIcon.of(FontAwesomeSolid.TAG, 14, Color.GRAY));
+        lblSub.setIcon(null); // FontIcon.of(FontAwesomeSolid.TAG, 14, Color.GRAY));
         headerPanel.add(lblSub, gbc);
 
         gbc.gridx = 1; gbc.weightx = 1.0;
@@ -134,10 +129,10 @@ public class MainFrame extends JFrame {
 
         JPanel attachButtons = new JPanel(new GridLayout(2, 1, 5, 5));
         JButton btnAddFile = new JButton("Thêm tệp");
-        btnAddFile.setIcon(FontIcon.of(FontAwesomeSolid.PAPERCLIP, 14, PRIMARY_COLOR));
+        btnAddFile.setIcon(null); // FontIcon.of(FontAwesomeSolid.PAPERCLIP, 14, PRIMARY_COLOR));
 
         JButton btnRemoveFile = new JButton("Xóa tệp");
-        btnRemoveFile.setIcon(FontIcon.of(FontAwesomeSolid.TRASH, 14, DANGER_COLOR));
+        btnRemoveFile.setIcon(null); // FontIcon.of(FontAwesomeSolid.TRASH, 14, DANGER_COLOR));
 
         attachButtons.add(btnAddFile);
         attachButtons.add(btnRemoveFile);
@@ -171,7 +166,7 @@ public class MainFrame extends JFrame {
         btnSend.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnSend.setBackground(PRIMARY_COLOR);
         btnSend.setForeground(Color.WHITE);
-        btnSend.setIcon(FontIcon.of(FontAwesomeSolid.PAPER_PLANE, 18, Color.WHITE));
+        btnSend.setIcon(null); // FontIcon.of(FontAwesomeSolid.PAPER_PLANE, 18, Color.WHITE));
         btnSend.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnSend.putClientProperty(FlatClientProperties.STYLE, "arc: 10");
         btnSend.addActionListener(e -> handleSendMail());
@@ -200,7 +195,7 @@ public class MainFrame extends JFrame {
         JButton btnRefresh = new JButton("LÀM MỚI");
         btnRefresh.setBackground(SUCCESS_COLOR);
         btnRefresh.setForeground(Color.WHITE);
-        btnRefresh.setIcon(FontIcon.of(FontAwesomeSolid.SYNC_ALT, 18, Color.WHITE));
+        btnRefresh.setIcon(null); // FontIcon.of(FontAwesomeSolid.SYNC_ALT, 18, Color.WHITE));
         btnRefresh.addActionListener(e -> handleRefreshInbox());
 
         panel.add(scrollInbox, BorderLayout.CENTER);
@@ -300,7 +295,7 @@ public class MainFrame extends JFrame {
         JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
         txtSearchSent.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Tìm kiếm email đã gửi...");
         JButton btnSearchSent = new JButton("Tìm");
-        btnSearchSent.setIcon(FontIcon.of(FontAwesomeSolid.SEARCH, 14, Color.GRAY));
+        btnSearchSent.setIcon(null); // FontIcon.of(FontAwesomeSolid.SEARCH, 14, Color.GRAY));
         searchPanel.add(txtSearchSent, BorderLayout.CENTER);
         searchPanel.add(btnSearchSent, BorderLayout.EAST);
         headerPanel.add(searchPanel, BorderLayout.CENTER);
@@ -313,11 +308,11 @@ public class MainFrame extends JFrame {
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton btnViewSent = new JButton("Xem chi tiết");
-        btnViewSent.setIcon(FontIcon.of(FontAwesomeSolid.EYE, 14, PRIMARY_COLOR));
+        btnViewSent.setIcon(null); // FontIcon.of(FontAwesomeSolid.EYE, 14, PRIMARY_COLOR));
         JButton btnDeleteSent = new JButton("Xóa");
-        btnDeleteSent.setIcon(FontIcon.of(FontAwesomeSolid.TRASH, 14, DANGER_COLOR));
+        btnDeleteSent.setIcon(null); // FontIcon.of(FontAwesomeSolid.TRASH, 14, DANGER_COLOR));
         JButton btnRefreshSent = new JButton("Làm mới");
-        btnRefreshSent.setIcon(FontIcon.of(FontAwesomeSolid.SYNC_ALT, 14, SUCCESS_COLOR));
+        btnRefreshSent.setIcon(null); // FontIcon.of(FontAwesomeSolid.SYNC_ALT, 14, SUCCESS_COLOR));
 
         btnPanel.add(btnViewSent);
         btnPanel.add(btnDeleteSent);
@@ -350,7 +345,7 @@ public class MainFrame extends JFrame {
         JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
         txtSearchReceived.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Tìm kiếm email...");
         JButton btnSearchReceived = new JButton("Tìm");
-        btnSearchReceived.setIcon(FontIcon.of(FontAwesomeSolid.SEARCH, 14, Color.GRAY));
+        btnSearchReceived.setIcon(null); // FontIcon.of(FontAwesomeSolid.SEARCH, 14, Color.GRAY));
         searchPanel.add(txtSearchReceived, BorderLayout.CENTER);
         searchPanel.add(btnSearchReceived, BorderLayout.EAST);
         topPanel.add(searchPanel, BorderLayout.CENTER);
@@ -376,19 +371,19 @@ public class MainFrame extends JFrame {
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton btnViewReceived = new JButton("Xem chi tiết nhận");
-        btnViewReceived.setIcon(FontIcon.of(FontAwesomeSolid.EYE, 14, PRIMARY_COLOR));
+        btnViewReceived.setIcon(null); // FontIcon.of(FontAwesomeSolid.EYE, 14, PRIMARY_COLOR));
         JButton btnMarkRead = new JButton("Đánh dấu đã đọc");
-        btnMarkRead.setIcon(FontIcon.of(FontAwesomeSolid.CHECK, 14, SUCCESS_COLOR));
+        btnMarkRead.setIcon(null); // FontIcon.of(FontAwesomeSolid.CHECK, 14, SUCCESS_COLOR));
         JButton btnDeleteReceived = new JButton("Xóa nhận");
-        btnDeleteReceived.setIcon(FontIcon.of(FontAwesomeSolid.TRASH, 14, DANGER_COLOR));
+        btnDeleteReceived.setIcon(null); // FontIcon.of(FontAwesomeSolid.TRASH, 14, DANGER_COLOR));
         JButton btnRefreshHistory = new JButton("Làm mới");
-        btnRefreshHistory.setIcon(FontIcon.of(FontAwesomeSolid.SYNC_ALT, 14, SUCCESS_COLOR));
+        btnRefreshHistory.setIcon(null); // FontIcon.of(FontAwesomeSolid.SYNC_ALT, 14, SUCCESS_COLOR));
         JButton btnViewOffline = new JButton("Xem Offline");
-        btnViewOffline.setIcon(FontIcon.of(FontAwesomeSolid.WIFI, 14, Color.GRAY));
+        btnViewOffline.setIcon(null); // FontIcon.of(FontAwesomeSolid.WIFI, 14, Color.GRAY));
         JButton btnSyncSupabase = new JButton("Sync Supabase");
-        btnSyncSupabase.setIcon(FontIcon.of(FontAwesomeSolid.CLOUD_DOWNLOAD_ALT, 14, new Color(49, 201, 95)));
+        btnSyncSupabase.setIcon(null); // FontIcon.of(FontAwesomeSolid.CLOUD_DOWNLOAD_ALT, 14, new Color(49, 201, 95)));
         JButton btnPullSupabase = new JButton("Pull từ Supabase");
-        btnPullSupabase.setIcon(FontIcon.of(FontAwesomeSolid.DOWNLOAD, 14, new Color(49, 201, 95)));
+        btnPullSupabase.setIcon(null); // FontIcon.of(FontAwesomeSolid.DOWNLOAD, 14, new Color(49, 201, 95)));
 
         btnPanel.add(btnViewReceived);
         btnPanel.add(btnMarkRead);
@@ -592,7 +587,12 @@ public class MainFrame extends JFrame {
     }
 
     public static void setupLook() {
-        try { UIManager.setLookAndFeel(new FlatIntelliJLaf()); }
-        catch (Exception ex) { System.err.println("Failed to initialize LaF"); }
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+            JLabel.class.getResource("/icons/");
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
+        }
+        System.setProperty("flatlaf.useWindowDecorations", "false");
     }
 }

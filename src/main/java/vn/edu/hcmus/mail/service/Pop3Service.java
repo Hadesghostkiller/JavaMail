@@ -5,6 +5,7 @@ import vn.edu.hcmus.mail.database.EmailCache;
 import vn.edu.hcmus.mail.supabase.SupabaseSyncService;
 import vn.edu.hcmus.mail.model.Email;
 import javax.mail.*;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -69,7 +70,12 @@ public class Pop3Service {
                 try {
                     String fromEmail = msg.getFrom()[0].toString();
                     InternetAddress addr = new InternetAddress(fromEmail);
-                    String msgId = msg.getMessageID();
+                    String msgId;
+                    try {
+                        msgId = ((MimeMessage) msg).getMessageID();
+                    } catch (Exception e) {
+                        msgId = String.valueOf(System.currentTimeMillis());
+                    }
                     if (msgId == null) msgId = String.valueOf(System.currentTimeMillis());
 
                     Email emailRecord = new Email(Email.EmailType.RECEIVED);

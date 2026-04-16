@@ -1,7 +1,7 @@
 package vn.edu.hcmus.mail.main;
 
 import vn.edu.hcmus.mail.gui.MainFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
