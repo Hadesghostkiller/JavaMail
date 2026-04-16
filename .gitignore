@@ -37,3 +37,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Firebase Config ###
+config/serviceAccountKey.json
+
+### Local Database ###
+database/mail_history.db

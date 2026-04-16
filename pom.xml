@@ -46,6 +46,13 @@
             <artifactId>ikonli-fontawesome5-pack</artifactId>
             <version>12.3.0</version>
         </dependency>
+
+        <!-- Firebase Realtime Database -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.2.0</version>
+        </dependency>
     </dependencies>
 
 

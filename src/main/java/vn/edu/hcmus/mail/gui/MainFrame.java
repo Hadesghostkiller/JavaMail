@@ -4,8 +4,11 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
+import com.google.firebase.database.DataSnapshot;
 import vn.edu.hcmus.mail.config.MailConfig;
 import vn.edu.hcmus.mail.database.EmailCache;
+import vn.edu.hcmus.mail.firebase.FirebaseEmailParser;
+import vn.edu.hcmus.mail.firebase.FirebaseSyncService;
 import vn.edu.hcmus.mail.model.Email;
 import vn.edu.hcmus.mail.model.EmailContent;
 import vn.edu.hcmus.mail.service.Pop3Service;
@@ -383,12 +386,18 @@ public class MainFrame extends JFrame {
         btnRefreshHistory.setIcon(FontIcon.of(FontAwesomeSolid.SYNC_ALT, 14, SUCCESS_COLOR));
         JButton btnViewOffline = new JButton("Xem Offline");
         btnViewOffline.setIcon(FontIcon.of(FontAwesomeSolid.WIFI, 14, Color.GRAY));
+        JButton btnSyncFirebase = new JButton("Sync Firebase");
+        btnSyncFirebase.setIcon(FontIcon.of(FontAwesomeSolid.CLOUD_DOWNLOAD_ALT, 14, new Color(255, 153, 0)));
+        JButton btnPullFirebase = new JButton("Pull từ Firebase");
+        btnPullFirebase.setIcon(FontIcon.of(FontAwesomeSolid.DOWNLOAD, 14, new Color(255, 153, 0)));
 
         btnPanel.add(btnViewReceived);
         btnPanel.add(btnMarkRead);
         btnPanel.add(btnDeleteReceived);
         btnPanel.add(btnRefreshHistory);
         btnPanel.add(btnViewOffline);
+        btnPanel.add(btnSyncFirebase);
+        btnPanel.add(btnPullFirebase);
         panel.add(btnPanel, BorderLayout.SOUTH);
 
         btnSearchReceived.addActionListener(e -> searchAllEmails());
@@ -406,8 +415,62 @@ public class MainFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Chưa có dữ liệu offline. Vui lòng kết nối mạng để tải email.");
             }
         });
+        btnSyncFirebase.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Email đã được tự động sync lên Firebase khi gửi/nhận!\nXem console để kiểm tra.");
+        });
+        btnPullFirebase.addActionListener(e -> pullFromFirebase());
 
         return panel;
+    }
+
+    private void pullFromFirebase() {
+        new Thread(() -> {
+            SwingUtilities.invokeLater(() -> {
+                btnPullFirebase.setEnabled(false);
+                btnPullFirebase.setText("Đang tải...");
+            });
+
+            FirebaseSyncService.getInstance().pullAllEmails(new FirebaseSyncService.DataCallback() {
+                @Override
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    int addedCount = 0;
+                    if (dataSnapshot.hasChild("sent")) {
+                        List<Email> sentEmails = FirebaseEmailParser.parseSentEmails(dataSnapshot.child("sent"));
+                        for (Email email : sentEmails) {
+                            if (emailCache.getSentEmail(email.getMsgId()).isEmpty()) {
+                                emailCache.cacheSentEmail(email);
+                                addedCount++;
+                            }
+                        }
+                    }
+                    if (dataSnapshot.hasChild("received")) {
+                        List<Email> receivedEmails = FirebaseEmailParser.parseReceivedEmails(dataSnapshot.child("received"));
+                        for (Email email : receivedEmails) {
+                            if (emailCache.getReceivedEmail(email.getMsgId()).isEmpty()) {
+                                emailCache.cacheReceivedEmail(email);
+                                addedCount++;
+                            }
+                        }
+                    }
+                    final int finalCount = addedCount;
+                    SwingUtilities.invokeLater(() -> {
+                        loadHistoryData();
+                        btnPullFirebase.setEnabled(true);
+                        btnPullFirebase.setText("Pull từ Firebase");
+                        JOptionPane.showMessageDialog(MainFrame.this, "Đã tải " + finalCount + " email từ Firebase!");
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    SwingUtilities.invokeLater(() -> {
+                        btnPullFirebase.setEnabled(true);
+                        btnPullFirebase.setText("Pull từ Firebase");
+                        JOptionPane.showMessageDialog(MainFrame.this, "Lỗi Firebase: " + error, "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    });
+                }
+            });
+        }).start();
     }
 
     private void searchSentEmails() {
