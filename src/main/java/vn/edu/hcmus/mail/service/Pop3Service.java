@@ -1,10 +1,13 @@
 package vn.edu.hcmus.mail.service;
 
 import vn.edu.hcmus.mail.config.MailConfig;
+import vn.edu.hcmus.mail.database.EmailCache;
+import vn.edu.hcmus.mail.model.Email;
 import javax.mail.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Properties;
 import javax.mail.internet.*;
 
@@ -51,13 +54,37 @@ public class Pop3Service {
 
                 // LẤY NỘI DUNG THƯ (BODY)
                 sb.append("- Nội dung: \n");
+                String bodyContent = "";
                 try {
-                    sb.append(getTextFromMessage(msg)); // Gọi hàm phụ trợ bên dưới
+                    bodyContent = getTextFromMessage(msg);
+                    sb.append(bodyContent);
                 } catch (Exception e) {
                     sb.append("[Không thể hiển thị nội dung]");
                 }
 
                 sb.append("\n---------------------------\n\n");
+
+                // Lưu email vào database
+                try {
+                    String fromEmail = msg.getFrom()[0].toString();
+                    InternetAddress addr = new InternetAddress(fromEmail);
+                    String msgId = msg.getMessageID();
+                    if (msgId == null) msgId = String.valueOf(System.currentTimeMillis());
+
+                    Email emailRecord = new Email(Email.EmailType.RECEIVED);
+                    emailRecord.setMsgId(msgId);
+                    emailRecord.setFromEmail(addr.getAddress());
+                    emailRecord.setToEmail(MailConfig.EMAIL_USER);
+                    emailRecord.setSubject(msg.getSubject() != null ? msg.getSubject() : "(Không có tiêu đề)");
+                    emailRecord.setBody(bodyContent);
+                    emailRecord.setTimestamp(LocalDateTime.now());
+                    emailRecord.setRead(false);
+
+                    EmailCache.getInstance().cacheReceivedEmail(emailRecord);
+                    System.out.println("[DATABASE] Đã lưu email nhận được vào database: " + emailRecord.getSubject());
+                } catch (Exception dbEx) {
+                    System.err.println("[DATABASE] Lỗi khi lưu email: " + dbEx.getMessage());
+                }
             }
 
             inbox.close(false);

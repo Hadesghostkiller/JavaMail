@@ -1,6 +1,8 @@
 package vn.edu.hcmus.mail.service;
 
 import vn.edu.hcmus.mail.config.MailConfig;
+import vn.edu.hcmus.mail.database.EmailCache;
+import vn.edu.hcmus.mail.model.Email;
 import vn.edu.hcmus.mail.model.EmailContent;
 
 import javax.activation.DataHandler;
@@ -10,8 +12,11 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,6 +46,10 @@ public class SmtpService {
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getTo()));
         message.setSubject(email.getSubject(), "UTF-8");
 
+        // Tạo message ID trước khi gửi để lưu vào database
+        String msgId = UUID.randomUUID().toString();
+        message.setHeader("Message-ID", "<" + msgId + ">");
+
         // Xử lý Multipart (Nội dung văn bản + File đính kèm)
         Multipart multipart = new MimeMultipart();
 
@@ -49,6 +58,7 @@ public class SmtpService {
         textPart.setText(email.getBody(), "UTF-8");
         multipart.addBodyPart(textPart);
 
+        List<String> savedAttachments = new ArrayList<>();
         // Phần xử lý file đính kèm
         if (email.getAttachmentPaths() != null) {
             for (String filePath : email.getAttachmentPaths()) {
@@ -61,6 +71,7 @@ public class SmtpService {
                     String fileName = MimeUtility.encodeText(file.getName(), "UTF-8", "B");
                     attachPart.setFileName(fileName);
                     multipart.addBodyPart(attachPart);
+                    savedAttachments.add(file.getName());
                 } else {
                     System.out.println("=> File không hợp lệ hoặc quá 25MB: " + file.getName());
                 }
@@ -69,6 +80,18 @@ public class SmtpService {
 
         message.setContent(multipart);
         Transport.send(message);
+
+        // Lưu email vào database sau khi gửi thành công
+        Email emailRecord = new Email(Email.EmailType.SENT);
+        emailRecord.setMsgId(msgId);
+        emailRecord.setFromEmail(MailConfig.EMAIL_USER);
+        emailRecord.setToEmail(email.getTo());
+        emailRecord.setSubject(email.getSubject());
+        emailRecord.setBody(email.getBody());
+        emailRecord.setAttachments(savedAttachments);
+        emailRecord.setTimestamp(LocalDateTime.now());
+        EmailCache.getInstance().cacheSentEmail(emailRecord);
+        System.out.println("[DATABASE] Đã lưu email đã gửi vào database: " + email.getSubject());
     }
 
 
