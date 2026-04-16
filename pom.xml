@@ -47,11 +47,18 @@
             <version>12.3.0</version>
         </dependency>
 
-        <!-- Firebase Realtime Database -->
+        <!-- Supabase Java Client -->
         <dependency>
-            <groupId>com.google.firebase</groupId>
-            <artifactId>firebase-admin</artifactId>
-            <version>9.2.0</version>
+            <groupId>io.supabase</groupId>
+            <artifactId>supabase-java</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+
+        <!-- Gson for JSON parsing -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
         </dependency>
     </dependencies>
 

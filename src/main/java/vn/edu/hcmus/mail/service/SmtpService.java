@@ -2,7 +2,7 @@ package vn.edu.hcmus.mail.service;
 
 import vn.edu.hcmus.mail.config.MailConfig;
 import vn.edu.hcmus.mail.database.EmailCache;
-import vn.edu.hcmus.mail.firebase.FirebaseSyncService;
+import vn.edu.hcmus.mail.supabase.SupabaseSyncService;
 import vn.edu.hcmus.mail.model.Email;
 import vn.edu.hcmus.mail.model.EmailContent;
 
@@ -94,7 +94,7 @@ public class SmtpService {
         EmailCache.getInstance().cacheSentEmail(emailRecord);
         System.out.println("[DATABASE] Đã lưu email đã gửi vào database: " + email.getSubject());
 
-        FirebaseSyncService.getInstance().syncSentEmail(emailRecord);
+        SupabaseSyncService.getInstance().syncSentEmail(emailRecord);
     }
 
 

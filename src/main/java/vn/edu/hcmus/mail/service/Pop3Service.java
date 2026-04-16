@@ -2,7 +2,7 @@ package vn.edu.hcmus.mail.service;
 
 import vn.edu.hcmus.mail.config.MailConfig;
 import vn.edu.hcmus.mail.database.EmailCache;
-import vn.edu.hcmus.mail.firebase.FirebaseSyncService;
+import vn.edu.hcmus.mail.supabase.SupabaseSyncService;
 import vn.edu.hcmus.mail.model.Email;
 import javax.mail.*;
 import java.io.File;
@@ -84,7 +84,7 @@ public class Pop3Service {
                     EmailCache.getInstance().cacheReceivedEmail(emailRecord);
                     System.out.println("[DATABASE] Đã lưu email nhận được vào database: " + emailRecord.getSubject());
 
-                    FirebaseSyncService.getInstance().syncReceivedEmail(emailRecord);
+                    SupabaseSyncService.getInstance().syncReceivedEmail(emailRecord);
                 } catch (Exception dbEx) {
                     System.err.println("[DATABASE] Lỗi khi lưu email: " + dbEx.getMessage());
                 }
