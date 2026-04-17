@@ -30,11 +30,11 @@ public class SupabaseEmailParser {
                     email.setTimestamp(parseTimestamp(getString(obj, "timestamp")));
                     emails.add(email);
                 } catch (Exception e) {
-                    System.err.println("[SUPABASE] Lỗi parse sent email: " + e.getMessage());
+                    System.err.println("[SUPABASE] Error parsing sent email: " + e.getMessage());
                 }
             }
         } catch (Exception e) {
-            System.err.println("[SUPABASE] Lỗi parse JSON: " + e.getMessage());
+            System.err.println("[SUPABASE] Error parsing JSON: " + e.getMessage());
         }
         return emails;
     }
@@ -59,11 +59,11 @@ public class SupabaseEmailParser {
                     email.setRead(getBoolean(obj, "is_read"));
                     emails.add(email);
                 } catch (Exception e) {
-                    System.err.println("[SUPABASE] Lỗi parse received email: " + e.getMessage());
+                    System.err.println("[SUPABASE] Error parsing received email: " + e.getMessage());
                 }
             }
         } catch (Exception e) {
-            System.err.println("[SUPABASE] Lỗi parse JSON: " + e.getMessage());
+            System.err.println("[SUPABASE] Error parsing JSON: " + e.getMessage());
         }
         return emails;
     }

@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,7 @@ public class SupabaseSyncService {
 
     public void syncSentEmail(Email email) {
         if (!SupabaseConfig.isEnabled()) {
-            System.out.println("[SUPABASE] Chưa được kích hoạt. Bỏ qua sync.");
+            System.out.println("[SUPABASE] Not enabled. Skipping sync.");
             return;
         }
 
@@ -44,22 +43,24 @@ public class SupabaseSyncService {
                 data.put("timestamp", email.getTimestamp().format(DATE_FORMAT));
                 data.put("attachments", email.getAttachments());
 
-                String response = postToSupabase(data, "sent_emails");
-                System.out.println("[SUPABASE] Đã sync email đã gửi: " + email.getSubject());
+                postToSupabase(data, "sent_emails");
+                System.out.println("[SUPABASE] Synced sent email: " + email.getSubject());
             } catch (Exception e) {
-                System.err.println("[SUPABASE] Lỗi sync sent email: " + e.getMessage());
+                System.err.println("[SUPABASE] Error syncing sent email: " + e.getMessage());
             }
         }).start();
     }
 
     public void syncReceivedEmail(Email email) {
         if (!SupabaseConfig.isEnabled()) {
-            System.out.println("[SUPABASE] Chưa được kích hoạt. Bỏ qua sync.");
+            System.out.println("[SUPABASE] Not enabled. Skipping sync.");
             return;
         }
 
         new Thread(() -> {
             try {
+                System.out.println("[SUPABASE] Syncing received email: " + email.getSubject());
+                
                 Map<String, Object> data = new HashMap<>();
                 data.put("msg_id", email.getMsgId());
                 data.put("from_email", email.getFromEmail());
@@ -69,15 +70,17 @@ public class SupabaseSyncService {
                 data.put("timestamp", email.getTimestamp().format(DATE_FORMAT));
                 data.put("is_read", email.isRead());
 
-                String response = postToSupabase(data, "received_emails");
-                System.out.println("[SUPABASE] Đã sync email nhận: " + email.getSubject());
+                postToSupabase(data, "received_emails");
+                System.out.println("[SUPABASE] Synced received email: " + email.getSubject());
             } catch (Exception e) {
-                System.err.println("[SUPABASE] Lỗi sync received email: " + e.getMessage());
+                System.err.println("[SUPABASE] Error syncing received email: " + e.getMessage());
+                e.printStackTrace();
             }
         }).start();
     }
 
-    private String postToSupabase(Map<String, Object> data, String table) throws Exception {
+    private void postToSupabase(Map<String, Object> data, String table) throws Exception {
+        System.out.println("[SUPABASE] Posting to: " + SupabaseConfig.getRestUrl() + "/" + table);
         URL url = new URL(SupabaseConfig.getRestUrl() + "/" + table + "?select=*");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -93,9 +96,7 @@ public class SupabaseSyncService {
         }
 
         int responseCode = conn.getResponseCode();
-        if (responseCode >= 200 && responseCode < 300) {
-            return "Success";
-        } else {
+        if (responseCode < 200 || responseCode >= 300) {
             throw new Exception("HTTP " + responseCode);
         }
     }
@@ -125,7 +126,7 @@ public class SupabaseSyncService {
                 }
             }
         } catch (Exception e) {
-            System.err.println("[SUPABASE] Lỗi fetch: " + e.getMessage());
+            System.err.println("[SUPABASE] Fetch error: " + e.getMessage());
         }
         return "[]";
     }
